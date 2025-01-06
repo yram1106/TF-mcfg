@@ -12,7 +12,7 @@ st.set_page_config(
 )
 
 # Título principal con emoji
-st.title(📈 Aplicación Interactiva de Análisis de Datos)
+st.title("📈 Aplicación Interactiva de Análisis de Datos")
 
 # Barra lateral para el menú
 menu = [Inicio 🏠, EDA 🧮, Regresiones 📈, Generar Informe 📝]
