@@ -16,7 +16,7 @@ st.title("📈 Aplicación Interactiva de Análisis de Datos")
 
 # Barra lateral para el menú
 menu = ["Inicio 🏠, EDA 🧮, Regresiones 📈, Generar Informe 📝"]
-choice = st.sidebar.selectbox(Navega por los módulos, menu)
+choice = st.sidebar.selectbox("Navega por los módulos", menu)
 
 # Variables globales para almacenar datos
 uploaded_data = None
