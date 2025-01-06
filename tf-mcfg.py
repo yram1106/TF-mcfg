@@ -141,4 +141,4 @@ elif choice == "Informe 📄":
         st.warning("Por favor, carga un dataset en la sección de EDA primero.")
 
 # Footer
-st.sidebar.write(Desarrollado por [Mary Figueroa - Paradigmas de programación])
+st.sidebar.write("Desarrollado por Mary Figueroa - Paradigmas de programación")
