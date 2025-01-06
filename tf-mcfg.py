@@ -15,7 +15,7 @@ st.set_page_config(
 st.title("📈 Aplicación Interactiva de Análisis de Datos")
 
 # Barra lateral para el menú
-menu = [Inicio 🏠, EDA 🧮, Regresiones 📈, Generar Informe 📝]
+menu = ["Inicio 🏠, EDA 🧮, Regresiones 📈, Generar Informe 📝"]
 choice = st.sidebar.selectbox(Navega por los módulos, menu)
 
 # Variables globales para almacenar datos
@@ -23,7 +23,7 @@ uploaded_data = None
 
 # Módulos según la opción seleccionada
 if choice == Inicio 🏠
-    st.header(🏠 Bienvenido a la Aplicación)
+    st.header("🏠 Bienvenido a la Aplicación")
     st.write(
         Esta herramienta interactiva te permite cargar datasets, realizar análisis exploratorios (EDA),
         aplicar modelos de regresión y generar informes en PDF. 
@@ -36,7 +36,7 @@ if choice == Inicio 🏠
     )
 
 elif choice == EDA 🧮
-    st.header(🧮 Análisis Exploratorio de Datos (EDA))
+    st.header("🧮 Análisis Exploratorio de Datos" (EDA))
     file = st.file_uploader(Sube un archivo CSV, type=[csv])
     
     if file is not None
@@ -68,7 +68,7 @@ elif choice == Regresiones 📈
     st.warning(Funcionalidad de regresiones en desarrollo.)
 
 elif choice == Generar Informe 📝
-    st.header(📝 Generación de Informes)
+    st.header("📝 Generación de Informes")
     
     if uploaded_data is not None
         st.write(Generando un informe con el dataset cargado...)
@@ -92,7 +92,7 @@ elif choice == Generar Informe 📝
                 pdfkit.from_string(report_html, informe.pdf)
                 st.success(Informe generado con éxito. Descárgalo abajo)
                 with open(informe.pdf, rb) as pdf_file
-                    st.download_button(📥 Descargar Informe, pdf_file, file_name=informe.pdf)
+                    st.download_button("📥 Descargar Informe", pdf_file, file_name=informe.pdf)
             except Exception as e
                 st.error(fError al generar el informe {e})
     else
