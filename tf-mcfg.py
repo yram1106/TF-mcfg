@@ -41,7 +41,7 @@ elif choice == "EDA 🧮"
     
     if file is not None
         uploaded_data = pd.read_csv(file)
-        st.success(¡Dataset cargado con éxito!)
+        st.success("¡Dataset cargado con éxito!")
         st.write(### Vista previa del dataset)
         st.dataframe(uploaded_data.head())
         
