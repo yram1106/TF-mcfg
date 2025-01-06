@@ -22,7 +22,7 @@ choice = st.sidebar.selectbox(Navega por los módulos, menu)
 uploaded_data = None
 
 # Módulos según la opción seleccionada
-if choice == Inicio 🏠
+if choice == "Inicio 🏠"
     st.header("🏠 Bienvenido a la Aplicación")
     st.write(
         Esta herramienta interactiva te permite cargar datasets, realizar análisis exploratorios (EDA),
@@ -35,7 +35,7 @@ if choice == Inicio 🏠
         use_column_width=True
     )
 
-elif choice == EDA 🧮
+elif choice == "EDA 🧮"
     st.header("🧮 Análisis Exploratorio de Datos" (EDA))
     file = st.file_uploader(Sube un archivo CSV, type=[csv])
     
@@ -59,15 +59,15 @@ elif choice == EDA 🧮
             sns.scatterplot(x=uploaded_data[col_x], y=uploaded_data[col_y], ax=ax)
             st.pyplot(fig)
 
-elif choice == Regresiones 📈
-    st.header(📈 Modelos de Regresión)
+elif choice == "Regresiones 📈"
+    st.header("📈 Modelos de Regresión")
     st.write(
         En este módulo podrás aplicar modelos de regresión a tus datos.
         Próximamente Implementaremos regresiones lineales, polinómicas y más.
     )
     st.warning(Funcionalidad de regresiones en desarrollo.)
 
-elif choice == Generar Informe 📝
+elif choice == "Generar Informe 📝"
     st.header("📝 Generación de Informes")
     
     if uploaded_data is not None
