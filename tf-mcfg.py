@@ -7,12 +7,12 @@ import pdfkit
 # Configuración de la página
 st.set_page_config(
     page_title=Análisis Interactivo de Datos,
-    page_icon=📊,
+    page_icon=📈,
     layout=wide
 )
 
 # Título principal con emoji
-st.title(📊 Aplicación Interactiva de Análisis de Datos)
+st.title(📈 Aplicación Interactiva de Análisis de Datos)
 
 # Barra lateral para el menú
 menu = [Inicio 🏠, EDA 🧮, Regresiones 📈, Generar Informe 📝]
