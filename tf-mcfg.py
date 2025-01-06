@@ -1,102 +1,144 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
 import pdfkit
 
 # Configuración de la página
 st.set_page_config(
-    page_title= "Análisis Interactivo de Datos",
-    page_icon="📈",
-    layout=wide
+    page_title="Análisis Interactivo de Datos",
+    page_icon="📊",
+    layout="wide"
 )
 
-# Título principal con emoji
-st.title("📈 Aplicación Interactiva de Análisis de Datos")
+# Menú de navegación
+menu = ["Inicio 🏠", "EDA 📊", "Regresiones 📈", "Informe 📄"]
+choice = st.sidebar.selectbox("Navegación", menu)
 
-# Barra lateral para el menú
-menu = ["Inicio 🏠, EDA 🧮, Regresiones 📈, Generar Informe 📝"]
-choice = st.sidebar.selectbox("Navega por los módulos", menu)
+# Variable para almacenar el dataset cargado
+if "dataset" not in st.session_state:
+    st.session_state.dataset = None
 
-# Variables globales para almacenar datos
-uploaded_data = None
+# Inicio
+if choice == "Inicio 🏠":
+    st.title("Bienvenido a la Aplicación de Análisis Interactivo de Datos")
+    st.write("Usa el menú de la izquierda para navegar entre los módulos.")
+    st.write("Puedes cargar tus datos, explorar estadísticas, aplicar regresiones y generar informes.")
 
-# Módulos según la opción seleccionada
-if choice == "Inicio 🏠"
-    st.header("🏠 Bienvenido a la Aplicación")
-    st.write(
-        Esta herramienta interactiva te permite cargar datasets, realizar análisis exploratorios (EDA),
-        aplicar modelos de regresión y generar informes en PDF. 
-        Utiliza el menú lateral para comenzar.
-    )
-    st.image(
-        httpsstreamlit.ioimagesbrandstreamlit-logo-secondary-colormark-darktext.png,
-        caption=Streamlit App,
-        use_column_width=True
-    )
+# EDA
+elif choice == "EDA 📊":
+    st.title("Análisis Exploratorio de Datos 📊")
+    st.write("Carga un dataset y realiza análisis exploratorios.")
 
-elif choice == "EDA 🧮"
-    st.header("🧮 Análisis Exploratorio de Datos" (EDA))
-    file = st.file_uploader(Sube un archivo CSV, type=[csv])
-    
-    if file is not None
-        uploaded_data = pd.read_csv(file)
-        st.success("¡Dataset cargado con éxito!")
-        st.write(### Vista previa del dataset)
-        st.dataframe(uploaded_data.head())
+    # Cargar dataset
+    uploaded_file = st.file_uploader("Carga tu archivo CSV", type=["csv"])
+    if uploaded_file is not None:
+        dataset = pd.read_csv(uploaded_file)
+        st.session_state.dataset = dataset
+        st.write("Dataset cargado exitosamente:")
+        st.dataframe(dataset.head())
         
         # Estadísticas descriptivas
-        st.write(### Estadísticas descriptivas)
-        st.write(uploaded_data.describe())
+        st.subheader("Estadísticas Descriptivas")
+        st.write(dataset.describe())
 
-        # Visualización
-        st.write(### Visualización de Datos)
-        col_x = st.selectbox(Selecciona la columna X para el gráfico, uploaded_data.columns)
-        col_y = st.selectbox(Selecciona la columna Y para el gráfico, uploaded_data.columns)
+        # Visualizaciones
+        st.subheader("Visualizaciones")
+        col_x = st.selectbox("Selecciona la variable para el eje X", dataset.columns)
+        col_y = st.selectbox("Selecciona la variable para el eje Y", dataset.columns)
+        plot_type = st.radio("Selecciona el tipo de gráfico", ["Scatterplot", "Boxplot"])
 
-        if st.button(Generar gráfico de dispersión)
+        if plot_type == "Scatterplot":
             fig, ax = plt.subplots()
-            sns.scatterplot(x=uploaded_data[col_x], y=uploaded_data[col_y], ax=ax)
+            ax.scatter(dataset[col_x], dataset[col_y])
+            ax.set_title(f"Scatterplot: {col_x} vs {col_y}")
+            ax.set_xlabel(col_x)
+            ax.set_ylabel(col_y)
+            st.pyplot(fig)
+        elif plot_type == "Boxplot":
+            fig, ax = plt.subplots()
+            ax.boxplot(dataset[col_y])
+            ax.set_title(f"Boxplot de {col_y}")
+            ax.set_ylabel(col_y)
             st.pyplot(fig)
 
-elif choice == "Regresiones 📈"
-    st.header("📈 Modelos de Regresión")
-    st.write(
-        En este módulo podrás aplicar modelos de regresión a tus datos.
-        Próximamente Implementaremos regresiones lineales, polinómicas y más.
-    )
-    st.warning(Funcionalidad de regresiones en desarrollo.)
+# Regresiones
+elif choice == "Regresiones 📈":
+    st.title("Módulo de Regresiones 📈")
+    st.write("Aplica modelos de regresión a tus datos.")
 
-elif choice == "Generar Informe 📝"
-    st.header("📝 Generación de Informes")
-    
-    if uploaded_data is not None
-        st.write(Generando un informe con el dataset cargado...)
-        # Generar HTML para el informe
-        report_html = f
-        html
-        headtitleInforme Ejecutivotitlehead
-        body
-        h1Informe Ejecutivoh1
-        h2Vista previa del dataseth2
-        {uploaded_data.head().to_html()}
-        h2Estadísticas descriptivash2
-        {uploaded_data.describe().to_html()}
-        body
-        html
-        
-        
-        if st.button(Exportar informe a PDF)
-            # Guardar el informe como PDF
-            try
-                pdfkit.from_string(report_html, informe.pdf)
-                st.success(Informe generado con éxito. Descárgalo abajo)
-                with open(informe.pdf, rb) as pdf_file
-                    st.download_button("📥 Descargar Informe", pdf_file, file_name=informe.pdf)
-            except Exception as e
-                st.error(fError al generar el informe {e})
-    else
-        st.warning(Por favor, sube un dataset en el módulo de EDA antes de generar el informe.)
+    if st.session_state.dataset is not None:
+        dataset = st.session_state.dataset
+        st.write("Datos cargados:")
+        st.dataframe(dataset.head())
+
+        # Seleccionar variables
+        st.subheader("Configuración del modelo")
+        target = st.selectbox("Selecciona la variable objetivo (Y)", dataset.columns)
+        features = st.multiselect("Selecciona las variables predictoras (X)", dataset.columns)
+
+        if st.button("Entrenar modelo"):
+            X = dataset[features]
+            y = dataset[target]
+
+            # Dividir datos
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+            # Entrenar modelo
+            model = LinearRegression()
+            model.fit(X_train, y_train)
+
+            # Predicciones y métricas
+            y_pred = model.predict(X_test)
+            st.write("Coeficientes del modelo:", model.coef_)
+            st.write("Intercepto:", model.intercept_)
+            st.write("Mean Squared Error (MSE):", mean_squared_error(y_test, y_pred))
+            st.write("R² Score:", r2_score(y_test, y_pred))
+
+            # Visualizar regresión
+            fig, ax = plt.subplots()
+            ax.scatter(y_test, y_pred)
+            ax.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', lw=2)
+            ax.set_xlabel("Valores Reales")
+            ax.set_ylabel("Predicciones")
+            st.pyplot(fig)
+    else:
+        st.warning("Por favor, carga un dataset en la sección de EDA primero.")
+
+# Informe
+elif choice == "Informe 📄":
+    st.title("Generación de Informes 📄")
+    st.write("Crea y descarga informes ejecutivos de tu análisis.")
+
+    if st.session_state.dataset is not None:
+        dataset = st.session_state.dataset
+        st.write("Generando informe...")
+        report_html = f"""
+        <h1>Informe Ejecutivo</h1>
+        <p>Este informe contiene los resultados del análisis exploratorio de datos y los modelos de regresión aplicados.</p>
+        <h2>Vista Previa de los Datos</h2>
+        {dataset.head().to_html()}
+        <h2>Estadísticas Descriptivas</h2>
+        {dataset.describe().to_html()}
+        """
+
+        # Generar PDF
+        if st.button("Generar Informe PDF"):
+            try:
+                pdfkit.from_string(report_html, "informe.pdf")
+                with open("informe.pdf", "rb") as pdf:
+                    st.download_button(
+                        label="Descargar Informe PDF",
+                        data=pdf,
+                        file_name="informe.pdf",
+                        mime="application/pdf"
+                    )
+            except Exception as e:
+                st.error(f"Error al generar el PDF: {e}")
+    else:
+        st.warning("Por favor, carga un dataset en la sección de EDA primero.")
 
 # Footer
 st.sidebar.write(Desarrollado por [Mary Figueroa - Paradigmas de programación])
