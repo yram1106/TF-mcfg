@@ -7,7 +7,7 @@ import pdfkit
 # Configuración de la página
 st.set_page_config(
     page_title=Análisis Interactivo de Datos,
-    page_icon=📈,
+    page_icon="📈",
     layout=wide
 )
 
