@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
-import pdfkit
 
 # Configuración de la página
 st.set_page_config(
@@ -115,6 +114,7 @@ elif choice == "Informe 📄":
     if st.session_state.dataset is not None:
         dataset = st.session_state.dataset
         st.write("Generando informe...")
+
         report_html = f"""
         <h1>Informe Ejecutivo</h1>
         <p>Este informe contiene los resultados del análisis exploratorio de datos y los modelos de regresión aplicados.</p>
@@ -124,19 +124,19 @@ elif choice == "Informe 📄":
         {dataset.describe().to_html()}
         """
 
-        # Generar PDF
-        if st.button("Generar Informe PDF"):
-            try:
-                pdfkit.from_string(report_html, "informe.pdf")
-                with open("informe.pdf", "rb") as pdf:
-                    st.download_button(
-                        label="Descargar Informe PDF",
-                        data=pdf,
-                        file_name="informe.pdf",
-                        mime="application/pdf"
-                    )
-            except Exception as e:
-                st.error(f"Error al generar el PDF: {e}")
+        # Mostrar informe como HTML si no se puede generar PDF
+        st.markdown(report_html, unsafe_allow_html=True)
+        
+        # Alternativa si pdfkit no funciona: permitir descargar un CSV
+        if st.button("Descargar datos como CSV"):
+            dataset.to_csv("informe.csv")
+            with open("informe.csv", "rb") as file:
+                st.download_button(
+                    label="Descargar Informe CSV",
+                    data=file,
+                    file_name="informe.csv",
+                    mime="text/csv"
+                )
     else:
         st.warning("Por favor, carga un dataset en la sección de EDA primero.")
 
